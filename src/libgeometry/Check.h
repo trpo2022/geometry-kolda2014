@@ -1,10 +1,11 @@
 #ifndef function
 #define function
 
-void check(float x_cir, float y_cir, float r, float x1_tr, float y1_tr, float x2_tr, float y2_tr, float x3_tr, float y3_tr);
-void circle_area(float x_cir, float y_cir, float r, float x1_tr, float y1_tr, float x2_tr, float y2_tr, float x3_tr, float y3_tr);
-void circle_perimeter(float x_cir, float y_cir, float r, float x1_tr, float y1_tr, float x2_tr, float y2_tr, float x3_tr, float y3_tr);
-void triangle_area(float x_cir, float y_cir, float r, float x1_tr, float y1_tr, float x2_tr, float y2_tr, float x3_tr, float y3_tr);
-void triangle_perimeter(float x_cir, float y_cir, float r, float x1_tr, float y1_tr, float x2_tr, float y2_tr, float x3_tr, float y3_tr);
+int check_circle(char str[], char re[]);
+int check_triangle(char str[], char re[]);
+int triangle_perimeter(float x1, float y1, float x2, float y2, float x3, float y3);
+int triangle_area(float x1, float y1, float x2, float y2, float x3, float y3);
+int circle_perimeter(float r);
+int circle_area(float r);
 
 #endif
