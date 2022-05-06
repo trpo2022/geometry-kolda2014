@@ -1,9 +1,9 @@
 #include "Check.h"
+#include <ctype.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 int check_circle(char str[], char re[])
 {
@@ -23,9 +23,9 @@ int check_circle(char str[], char re[])
 
     circle_perimeter(r);
 
-            circle_area(r);
+    circle_area(r);
 
-                    return 0;
+    return 0;
 }
 
 int check_triangle(char str[], char re[])
@@ -69,7 +69,7 @@ int check_triangle(char str[], char re[])
 
     triangle_area(x1, y1, x2, y2, x3, y3);
 
-            triangle_perimeter(x1, y1, x2, y2, x3, y3);
+    triangle_perimeter(x1, y1, x2, y2, x3, y3);
 
-                    return 0;
+    return 0;
 }
