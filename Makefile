@@ -24,6 +24,12 @@ LIB_OBJECTS = $(LIB_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
 
 DEPS = $(APP_OBJECTS:.o=.d) $(LIB_OBJECTS:.o=.d)
 
+test_name = test
+test_path = $(BIN_DIR)/$(test_name)
+
+test_sources = $(shell find test/ -name '*$(SRC_EXT)')
+test_objects = $(test_sources:test/%.$(SRC_EXT)=$(OBJ_DIR)/test/%.o)
+
 .PHONY: all
 all: $(APP_PATH)
 
@@ -40,6 +46,13 @@ $(OBJ_DIR)/%.o: %.c
 
 .PHONY: clean
 clean:
-	$(RM) $(APP_PATH) $(LIB_PATH)
+	$(RM) $(APP_PATH) $(test_path) $(LIB_PATH)
 	find $(OBJ_DIR) -name '*.o' -exec $(RM) '{}' \;
+	find $(OBJ_DIR) -name '*.i' -exec $(RM) '{}' \;
 	find $(OBJ_DIR) -name '*.d' -exec $(RM) '{}' \;
+	
+.PHONY: test
+test: $(test_path)
+
+$(test_path): $(test_objects) $(LIB_PATH)
+	$(CC) $(cflags) -I thirdparty -I src $^ $(myflag) -o $@
