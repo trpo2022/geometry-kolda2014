@@ -1,58 +1,66 @@
-APP_NAME = geometry
-LIB_NAME = libgeometry
+app_name = KeyboardNinja
+lib_name = libKeyboardNinja
 
-CFLAGS = -Wall -Werror -I src -I thirdparty -MP -MMD
+cflags = -Wall -Werror -I src -I thirdparty -MP -MMD
+# cflags2 = -Wall -Werror
 myflag = -lm
 
-# LDFLAGS =
-# LDLIBS =
+app_path = bin/$(app_name)
+lib_path = obj/src/$(lib_name)/$(lib_name).a
 
-BIN_DIR = bin
-OBJ_DIR = obj
-SRC_DIR = src
+app_sources = $(shell find src/$(app_name) -name '*.cpp')
+app_objects = $(app_sources:src/%.cpp=obj/src/%.o)
 
-APP_PATH = $(BIN_DIR)/$(APP_NAME)
-LIB_PATH = $(OBJ_DIR)/$(SRC_DIR)/$(LIB_NAME)/$(LIB_NAME).a
+lib_sources = $(shell find src/$(lib_name) -name '*.cpp')
+lib_objects = $(lib_sources:src/%.cpp=obj/src/%.o)
 
-SRC_EXT = c
-
-APP_SOURCES = $(shell find $(SRC_DIR)/$(APP_NAME) -name '*.$(SRC_EXT)')
-APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
-
-LIB_SOURCES = $(shell find $(SRC_DIR)/$(LIB_NAME) -name '*.$(SRC_EXT)')
-LIB_OBJECTS = $(LIB_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
-
-# DEPS = $(APP_OBJECTS:.o=.d) $(LIB_OBJECTS:.o=.d)
+# deps = $(app_objects:.o=.d) $(lib_objects:.o=.d)
 
 test_name = test
-test_path = $(BIN_DIR)/$(test_name)
+test_path = bin/$(test_name)
 
-test_sources = $(shell find test/ -name '*.$(SRC_EXT)')
-test_objects = $(test_sources:test/%.$(SRC_EXT)=$(OBJ_DIR)/test/%.o)
+test_sources = $(shell find test/ -name '*.cpp')
+test_objects = $(test_sources:test/%.cpp=obj/test/%.o)
+
+# test_deps = $(test_objects:.o=.d) $(lib_objects:.o=.d)
+
 
 .PHONY: all
-all: $(APP_PATH)
+all: $(app_path)
 
--include $(DEPS)
+# -include $(deps)
 
-$(APP_PATH): $(APP_OBJECTS) $(LIB_PATH)
-	$(CC) $(CFLAGS) $^ $(myflag) -o $@
+$(app_path): $(app_objects) $(lib_path)
+	g++ $(cflags) -DTEST $^ $(myflag) -o $@
 
-$(LIB_PATH): $(LIB_OBJECTS)
+$(lib_path): $(lib_objects)
 	ar rcs $@ $^
 
-$(OBJ_DIR)/%.o: %.c
-	$(CC) -c $(CFLAGS) $< $(myflag) -o $@
-	
+obj/%.o: %.cpp
+	g++ -c $(cflags) $< $(myflag) -o $@
+
+
+
+
 .PHONY: test
 test: $(test_path)
 
-$(test_path): $(test_objects) $(LIB_PATH)
-	$(CC) $(CFLAGS) -I thirdparty -I $(SRC_DIR) $^ $(myflag) -o $@
-	
+# -include $(test_deps)
+
+$(test_path): $(test_objects) $(lib_path)
+	g++ $(cflags) -I thirdparty -I src $^ $(myflag) -o $@
+
+# obj/%.o: %.cpp
+# 	g++ -c $(cflags) -I thirdparty -I src $< $(myflag) -o $@
+
+
+
+
 .PHONY: clean
 clean:
-	$(RM) $(APP_PATH) $(test_path) $(LIB_PATH)
-	find $(OBJ_DIR) -name '*.o' -exec $(RM) '{}' \;
-	find $(OBJ_DIR) -name '*.i' -exec $(RM) '{}' \;
-	find $(OBJ_DIR) -name '*.d' -exec $(RM) '{}' \;
+	$(RM) $(app_path) $(test_path) $(lib_path)
+	find obj/ -name '*.o' -exec $(RM) '{}' \;
+	find obj/ -name '*.i' -exec $(RM) '{}' \;
+	find obj/ -name '*.d' -exec $(RM) '{}' \;
+
+
