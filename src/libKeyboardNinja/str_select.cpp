@@ -4,13 +4,11 @@
 
 int quote_number;
 
-using namespace std;
-
-string str_select(const char* filename)
+std::string str_select(const char* filename)
 {
     int r;
-    ifstream fin(filename);
-    string quote_line;
+    std::ifstream fin(filename);
+    std::string quote_line;
 t:
     srand(time(NULL));
     quote_number = 0;

@@ -6,10 +6,10 @@ void count_lenght(
         const char* filename, char** array_quotes, int file_error, int test)
 {
     int k = 0;
-    ifstream fin(filename);
+    std::ifstream fin(filename);
     if (!fin) {
         if (test == 0) {
-            cout << "File cannot be opened!" << endl;
+            std::cout << "File cannot be opened!" << std::endl;
         }
         file_error = 1;
     }
